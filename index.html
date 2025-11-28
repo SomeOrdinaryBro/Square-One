@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Square One</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
+      :root {
+        --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+        --bg-dark: #1a1a2e;
+      }
+      body {
+        font-family: 'Fredoka', sans-serif;
+        background-color: var(--bg-dark);
+        color: #e0e0e0;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      /* Global Loader Styles */
+      #global-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background-color: var(--bg-dark);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.5s ease-out, visibility 0.5s;
+      }
+      #global-loader.loaded {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .loader-logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+        animation: pulse-soft 2s infinite ease-in-out;
+      }
+      .loader-dots {
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        background-color: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        animation: dot-bounce 1.4s infinite ease-in-out both;
+      }
+      .dot:nth-child(1) { animation-delay: -0.32s; }
+      .dot:nth-child(2) { animation-delay: -0.16s; }
+
+      /* Apple-style Animations */
+      @keyframes fade-in-up {
+        0% { opacity: 0; transform: translateY(15px) scale(0.98); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      @keyframes scale-in {
+        0% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+      @keyframes dot-bounce {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+      }
+      @keyframes pulse-soft {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+
+      .animate-fade-in-up {
+        animation: fade-in-up 0.5s var(--ease-apple) forwards;
+      }
+      .animate-scale-in {
+        animation: scale-in 0.3s var(--ease-apple) forwards;
+      }
+      .delay-100 { animation-delay: 100ms; }
+      .delay-200 { animation-delay: 200ms; }
+      .delay-300 { animation-delay: 300ms; }
+      
+      /* Utility for smooth view switching */
+      .view-container {
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.0/client",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "chess.js": "https://aistudiocdn.com/chess.js@^1.4.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body>
+    <!-- Instant Loading Screen -->
+    <div id="global-loader">
+      <div class="loader-logo"></div>
+      <h1 style="font-size: 24px; font-weight: 700; color: white; margin-bottom: 8px;">Square One</h1>
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 32px;">Chess from the very beginning.</p>
+      <div class="loader-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    
+    <div id="root"></div>
+  </body>
+</html>
