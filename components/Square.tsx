@@ -8,6 +8,9 @@ interface SquareProps {
   isSelected: boolean;
   isValidMove: boolean;
   isTarget: boolean;
+  isGuidanceFrom?: boolean;
+  isGuidanceTo?: boolean;
+  isDanger?: boolean;
   highContrast?: boolean;
   showPieceLabels?: boolean;
   onClick: () => void;
@@ -20,6 +23,9 @@ const Square: React.FC<SquareProps> = ({
   isSelected,
   isValidMove,
   isTarget,
+  isGuidanceFrom,
+  isGuidanceTo,
+  isDanger,
   highContrast,
   showPieceLabels,
   onClick,
@@ -36,10 +42,10 @@ const Square: React.FC<SquareProps> = ({
   let stateOverlay = '';
   
   if (isSelected) {
-    stateOverlay = 'ring-inset ring-4 ring-blue-500 z-10'; 
+    stateOverlay = 'ring-inset ring-4 ring-blue-500 z-10';
   } else if (isValidMove) {
     if (piece) {
-       stateOverlay = 'ring-inset ring-4 ring-red-400 bg-red-500/20'; 
+       stateOverlay = 'ring-inset ring-4 ring-red-400 bg-red-500/20';
     } else {
        stateOverlay = ''; 
     }
@@ -59,12 +65,20 @@ const Square: React.FC<SquareProps> = ({
         {squareId}
       </span>
 
-      {isTarget && !piece && (
+      {(isTarget || isGuidanceFrom) && !piece && (
         <div className="absolute inset-1 border-4 border-yellow-400 rounded-full opacity-80 pointer-events-none" />
       )}
 
-      {isTarget && piece && (
-        <div className="absolute inset-0 border-[6px] border-red-500/60 z-10 pointer-events-none" />
+      {(isTarget || isGuidanceFrom) && piece && (
+        <div className="absolute inset-0 border-[6px] border-yellow-400/70 z-10 pointer-events-none" />
+      )}
+
+      {isGuidanceTo && (
+        <div className="absolute inset-0 bg-blue-400/20 ring-2 ring-blue-400/60 rounded-lg pointer-events-none animate-pulse" />
+      )}
+
+      {isDanger && (
+        <div className="absolute inset-0 bg-red-500/15 ring-2 ring-red-500/40 rounded-lg pointer-events-none" />
       )}
       
       {isValidMove && !piece && !isTarget && (
