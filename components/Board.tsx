@@ -10,6 +10,8 @@ interface BoardProps {
   targetSquare?: string;
   hideKings?: boolean;
   isMistake?: boolean;
+  guidanceMoves?: { from: string; to: string; score: number; isRisky?: boolean }[];
+  dangerSquares?: string[];
   highContrast?: boolean;
   showPieceLabels?: boolean;
   onSquareClick: (square: string) => void;
@@ -22,12 +24,14 @@ const Board: React.FC<BoardProps> = ({
   fen, 
   selectedSquare, 
   validMoves, 
-  targetSquare, 
-  hideKings, 
-  isMistake, 
+  targetSquare,
+  hideKings,
+  isMistake,
+  guidanceMoves,
+  dangerSquares,
   highContrast,
   showPieceLabels,
-  onSquareClick 
+  onSquareClick
 }) => {
   const chess = useMemo(() => new ChessService(fen), [fen]);
 
@@ -58,6 +62,9 @@ const Board: React.FC<BoardProps> = ({
                 isSelected={selectedSquare === squareId}
                 isValidMove={validMoves.includes(squareId)}
                 isTarget={targetSquare === squareId}
+                isGuidanceFrom={guidanceMoves?.some((m) => m.from === squareId)}
+                isGuidanceTo={guidanceMoves?.some((m) => m.to === squareId)}
+                isDanger={dangerSquares?.includes(squareId)}
                 highContrast={highContrast}
                 showPieceLabels={showPieceLabels}
                 onClick={() => onSquareClick(squareId)}

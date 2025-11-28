@@ -4,8 +4,9 @@ import LevelSelect from './components/LevelSelect';
 import Game from './components/Game';
 import Settings from './components/Settings';
 import IntroChapter from './components/IntroChapter';
+import QuickMatchMenu from './components/QuickMatchMenu';
 import { getProgress, getSettings, saveProgress, saveSettings, resetProgress } from './utils/storage';
-import { UserProgress, UserSettings, ViewState } from './types';
+import { GameConfig, UserProgress, UserSettings, ViewState } from './types';
 import { soundManager } from './services/sound';
 
 // Wrapper for smooth screen transitions
@@ -26,6 +27,7 @@ const App: React.FC = () => {
     chapterIdx: number;
     levelIdx: number;
     isQuickGame: boolean;
+    quickConfig?: GameConfig;
   }>({ chapterIdx: 0, levelIdx: 0, isQuickGame: false });
 
   // 1. Hide Global Loader on Mount
@@ -86,7 +88,11 @@ const App: React.FC = () => {
   };
 
   const handleQuickGame = () => {
-    setGameConfig({ chapterIdx: 0, levelIdx: 0, isQuickGame: true });
+    setView('quickMenu');
+  };
+
+  const handleStartQuickMatch = (quickConfig: GameConfig) => {
+    setGameConfig({ chapterIdx: 0, levelIdx: 0, isQuickGame: true, quickConfig });
     setView('game');
   };
 
@@ -145,16 +151,19 @@ const App: React.FC = () => {
         );
       case 'game':
         return (
-          <Game 
-            key={`${gameConfig.chapterIdx}-${gameConfig.levelIdx}-${gameConfig.isQuickGame}`}
+          <Game
+            key={`${gameConfig.chapterIdx}-${gameConfig.levelIdx}-${gameConfig.isQuickGame}-${gameConfig.quickConfig?.mode || 'story'}-${gameConfig.quickConfig?.difficulty || 'none'}`}
             initialChapterIdx={gameConfig.chapterIdx}
             initialLevelIdx={gameConfig.levelIdx}
             isQuickGame={gameConfig.isQuickGame}
+            gameConfig={gameConfig.quickConfig}
             settings={settings}
             onExit={() => setView('menu')}
             onLevelComplete={handleLevelComplete}
           />
         );
+      case 'quickMenu':
+        return <QuickMatchMenu onBack={() => setView('menu')} onStart={handleStartQuickMatch} />;
       default:
         return null;
     }

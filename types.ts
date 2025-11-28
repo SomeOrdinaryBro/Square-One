@@ -2,6 +2,9 @@
 export type PieceType = 'p' | 'n' | 'b' | 'r' | 'q' | 'k';
 export type PieceColor = 'w' | 'b';
 
+export type GameMode = 'guidance' | 'free' | 'variant';
+export type GameDifficulty = 'easy' | 'normal' | 'hard';
+
 export interface LevelTask {
   id: string;
   instruction: string;
@@ -46,6 +49,21 @@ export interface UserProgress {
   unlockedLevelIdx: number;
 }
 
-export type ViewState = 'menu' | 'levels' | 'game' | 'settings' | 'intro';
+export interface GameConfig {
+  mode: GameMode;
+  difficulty: GameDifficulty;
+  hintsEnabled: boolean;
+  variantFen?: string;
+  variantName?: string;
+}
+
+export interface VariantScenario {
+  id: string;
+  name: string;
+  description: string;
+  fen: string;
+}
+
+export type ViewState = 'menu' | 'levels' | 'game' | 'settings' | 'intro' | 'quickMenu';
 
 export const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
